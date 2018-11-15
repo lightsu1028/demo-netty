@@ -1,6 +1,5 @@
 package heartBeat;
 
-import chatServer.ChatServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -9,11 +8,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.Delimiters;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
-import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.concurrent.TimeUnit;
 
@@ -41,8 +35,10 @@ public class HeartBeatServer {
 //                	 ch.pipeline().addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
 //                     ch.pipeline().addLast("decoder", new StringDecoder());
 //                     ch.pipeline().addLast("encoder", new StringEncoder());
-                     ch.pipeline().addLast(new IdleStateHandler(5, 7, 3, TimeUnit.SECONDS));
-                     ch.pipeline().addLast(new HeartServerHandler());
+                     ch.pipeline().addLast(new io.netty.handler.timeout.IdleStateHandler(10, 0, 0, TimeUnit.SECONDS));
+                     ch.pipeline().addLast(new MyIdleStateHandler());
+                     //向客户端发送心跳
+                     ch.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
                  }
              })
              .option(ChannelOption.SO_BACKLOG, 128)          // (5)

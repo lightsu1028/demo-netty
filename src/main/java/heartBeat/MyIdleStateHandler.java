@@ -13,7 +13,8 @@ import io.netty.util.concurrent.GlobalEventExecutor;
  * @author Baikang Lu
  * @date 2018/11/14
  */
-public class HeartServerHandler extends ChannelInboundHandlerAdapter{
+public class MyIdleStateHandler extends ChannelInboundHandlerAdapter{
+
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
