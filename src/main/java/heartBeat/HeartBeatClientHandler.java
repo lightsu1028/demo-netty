@@ -4,7 +4,6 @@ package heartBeat;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.util.concurrent.TimeUnit;
 
@@ -37,5 +36,14 @@ public class HeartBeatClientHandler extends ChannelInboundHandlerAdapter {
                 scheduleSendHeartBeat(ctx);
             }
         }, HEARTBEAT_INTERVAL, TimeUnit.SECONDS);
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        byte[] bytes = "abc".getBytes("utf-8");
+        for (byte aByte : bytes) {
+            System.out.println(aByte);
+        }
+
     }
 }

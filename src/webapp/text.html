@@ -1,0 +1,51 @@
+<html lang="en">
+<head>
+    <meta content="text/html" charset="utf-8"/>
+</head>
+<body>
+    <form onsubmit="return false">
+        <textarea name="message" style="width:400px;height: 200px;"></textarea>
+        <input type="button" value="发送数据" onclick="sendMsg(this.form.message.value)"></input>
+         <h3>服务器输出</h3>
+        <textarea id="responseText" style="width:400px;height: 200px;">
+
+        </textarea>
+        <input type="button" value="清空内容" onclick="javascript:document.getElementById('responseText').value=''"></input>
+    </form>
+
+    <script type="text/javascript">
+        var socket
+        if(window.WebSocket){
+            socket=new WebSocket("ws://localhost:8899/ws")
+            socket.onmessage=function (event) {
+                var el = document.getElementById('responseText')
+                el.value=el.value+"\n"+event.data;
+            }
+            socket.onopen=function (event) {
+                var el = document.getElementById('responseText')
+
+                el.value="连接开启";
+            }
+            socket.onclose=function (event) {
+                var el = document.getElementById('responseText')
+                el.value=el.value+"\n"+"连接关闭";
+            }
+        }else{
+            alert('浏览器不支持WebSocket!')
+        }
+
+        function sendMsg(message){
+            if(!window.WebSocket){
+                return;
+            }
+            if(socket.readyState==WebSocket.OPEN){
+                socket.send(message);
+            }else{
+                alert('连接尚未开启');
+            }
+        }
+    </script>
+
+</body>
+
+</html>
